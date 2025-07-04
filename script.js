@@ -1,5 +1,85 @@
 // 자바스크립트 파일 - 웹페이지에 움직임을 만드는 코드들
 
+// ================== 오프닝 애니메이션 제어 ==================
+
+// 오프닝 애니메이션 초기화 및 제어
+function initializeOpeningAnimation() {
+    console.log('오프닝 애니메이션을 시작합니다...');
+    
+    // 오프닝 애니메이션 요소들 가져오기
+    const openingAnimation = document.getElementById('openingAnimation');
+    const mainContent = document.getElementById('mainContent');
+    
+    // 초기 상태 설정
+    if (openingAnimation) {
+        openingAnimation.style.display = 'flex';
+        openingAnimation.style.opacity = '1';
+        openingAnimation.style.visibility = 'visible';
+    }
+    
+    if (mainContent) {
+        mainContent.style.opacity = '0';
+        mainContent.style.visibility = 'hidden';
+    }
+    
+    // 5초 후 메인 콘텐츠로 전환
+    setTimeout(() => {
+        hideOpeningAnimation();
+        showMainContent();
+    }, 5000);
+}
+
+// 오프닝 애니메이션 숨기기
+function hideOpeningAnimation() {
+    const openingAnimation = document.getElementById('openingAnimation');
+    
+    if (openingAnimation) {
+        openingAnimation.classList.add('hidden');
+        
+        // 추가 시간 후 완전히 제거
+        setTimeout(() => {
+            openingAnimation.style.display = 'none';
+            console.log('오프닝 애니메이션이 완료되었습니다.');
+        }, 500);
+    }
+}
+
+// 메인 콘텐츠 표시
+function showMainContent() {
+    const mainContent = document.getElementById('mainContent');
+    
+    if (mainContent) {
+        mainContent.style.visibility = 'visible';
+        mainContent.classList.add('visible');
+        console.log('메인 콘텐츠가 표시되었습니다.');
+    }
+}
+
+// 새로고침 시에만 오프닝 애니메이션 실행
+function shouldShowOpeningAnimation() {
+    // 세션 저장소를 사용하여 페이지 방문 여부 확인
+    const hasVisited = sessionStorage.getItem('akiaki_visited');
+    
+    if (!hasVisited) {
+        // 첫 방문이면 오프닝 애니메이션 실행
+        sessionStorage.setItem('akiaki_visited', 'true');
+        return true;
+    }
+    
+    return false;
+}
+
+// 오프닝 애니메이션 건너뛰기 (클릭 시)
+function skipOpeningAnimation() {
+    const openingAnimation = document.getElementById('openingAnimation');
+    
+    if (openingAnimation && !openingAnimation.classList.contains('hidden')) {
+        hideOpeningAnimation();
+        showMainContent();
+        console.log('오프닝 애니메이션을 건너뛰었습니다.');
+    }
+}
+
 // 예약하기 버튼을 눌렀을 때 실행되는 함수 (헤더 버튼용)
 function openReservation() {
     // 사용자에게 예약 안내 메시지를 보여줍니다
@@ -197,8 +277,42 @@ function closeMobileMenu() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('아키아키 웹페이지가 로드되었습니다!'); // 개발자 도구에서 확인용 메시지
     
-    // 히어로 캐러셀 자동 슬라이드 시작
-    startAutoSlide();
+    // 오프닝 애니메이션 실행 여부 확인 및 초기화
+    if (shouldShowOpeningAnimation()) {
+        initializeOpeningAnimation();
+        
+        // 오프닝 애니메이션 완료 후 히어로 캐러셀 시작
+        setTimeout(() => {
+            startAutoSlide();
+        }, 5500);
+    } else {
+        // 오프닝 애니메이션 건너뛰고 바로 메인 콘텐츠 표시
+        const openingAnimation = document.getElementById('openingAnimation');
+        const mainContent = document.getElementById('mainContent');
+        
+        if (openingAnimation) {
+            openingAnimation.style.display = 'none';
+        }
+        
+        if (mainContent) {
+            mainContent.style.opacity = '1';
+            mainContent.style.visibility = 'visible';
+            mainContent.classList.add('visible');
+        }
+        
+        // 히어로 캐러셀 바로 시작
+        startAutoSlide();
+    }
+    
+    // 오프닝 애니메이션 클릭 시 건너뛰기 이벤트 추가
+    const openingAnimation = document.getElementById('openingAnimation');
+    
+    if (openingAnimation) {
+        openingAnimation.addEventListener('click', skipOpeningAnimation);
+        
+        // 터치 이벤트도 추가 (모바일 지원)
+        openingAnimation.addEventListener('touchstart', skipOpeningAnimation);
+    }
     
     // 히어로 섹션에 마우스가 올라갔을 때 자동 슬라이드 멈추기
     const heroSection = document.querySelector('.hero-section');

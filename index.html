@@ -13,7 +13,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 헤더 영역 시작 -->
+    <!-- 오프닝 애니메이션 섹션 시작 -->
+    <div class="opening-animation" id="openingAnimation">
+        <div class="opening-content">
+            <!-- 로고 이미지 -->
+            <div class="opening-logo">
+                <img src="images/logo.png" alt="아키아키 로고" class="opening-logo-img">
+            </div>
+            
+            <!-- 로딩바 -->
+            <div class="loading-bar">
+                <div class="loading-bar-inner"></div>
+            </div>
+            
+            <!-- 환영 메시지 -->
+            <div class="welcome-message">
+                <p>아키아키에 오신 걸 환영합니다</p>
+                <p class="welcome-subtitle">Preparing your dining experience...</p>
+                <p class="skip-hint">화면을 클릭하면 건너뛸 수 있습니다</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 메인 콘텐츠 영역 (초기에는 숨김) -->
+    <div class="main-content" id="mainContent">
+        <!-- 헤더 영역 시작 -->
     <header class="header">
         <div class="header-container">
             <!-- 왼쪽: 로고 이미지 -->
@@ -1449,6 +1473,8 @@
             </div>
         </button>
     </div>
+    
+    </div> <!-- 메인 콘텐츠 영역 종료 -->
     
     <!-- 자바스크립트 파일 연결 -->
     <script src="script.js"></script>
