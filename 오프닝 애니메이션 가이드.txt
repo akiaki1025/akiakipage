@@ -37,7 +37,7 @@
 
 문구 및 효과 (선택사항)>
 
-* 하단에 작은 텍스트로 “아키아키에 오신 걸 환영합니다” or “Preparing your dining experience...”
+* 하단에 작은 텍스트로 "청주 대표 일식오마카세 아키아키"
 * fade-in / fade-out 효과도 병행 가능
 
 주의사항>

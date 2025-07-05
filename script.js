@@ -82,21 +82,49 @@ function skipOpeningAnimation() {
 
 // 예약하기 버튼을 눌렀을 때 실행되는 함수 (헤더 버튼용)
 function openReservation() {
-    // 사용자에게 예약 안내 메시지를 보여줍니다
-    alert('예약 문의는 전화로 연락주세요!\n📞 전화번호: 043-123-4567\n⏰ 영업시간: 오전 11시 ~ 오후 10시');
-    
-    // 나중에 실제 예약 시스템과 연결할 수 있습니다
-    // 예: 예약 페이지로 이동하거나 팝업창 띄우기
-    // window.open('reservation.html', '_blank'); // 새 창에서 예약 페이지 열기
-    // window.location.href = 'tel:043-123-4567'; // 전화 걸기
+    // 바로 네이버 예약 페이지로 이동
+    openNaverReservation();
 }
 
 // 네이버 예약 페이지로 이동하는 함수 (히어로 섹션 버튼용)
 function openNaverReservation() {
-    // 네이버 스마트플레이스 예약 페이지를 새 창에서 엽니다
-    const naverUrl = 'https://map.naver.com/p/search/%EC%95%84%ED%82%A4%EC%95%84%ED%82%A4/place/12027905?c=15.00,0,0,0,dh&placePath=/home?entry=pll&from=map&fromPanelNum=2&timestamp=202507020221&locale=ko&svcName=map_pcv5&searchText=%EC%95%84%ED%82%A4%EC%95%84%ED%82%A4';
-    window.open(naverUrl, '_blank');
-    console.log('네이버 예약 페이지로 이동했습니다');
+    try {
+        // 네이버 스마트플레이스 예약 페이지를 새 창에서 엽니다
+        const naverUrl = 'https://m.place.naver.com/restaurant/12027905/home?entry=pll';
+        const newWindow = window.open(naverUrl, '_blank', 'noopener,noreferrer');
+        
+        // 팝업이 차단되었는지 확인
+        if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+            // 팝업이 차단된 경우 직접 이동
+            if (confirm('팝업이 차단되었습니다.\n네이버 예약 페이지로 직접 이동하시겠습니까?')) {
+                window.location.href = naverUrl;
+            }
+        } else {
+            console.log('네이버 예약 페이지로 이동했습니다');
+        }
+    } catch (error) {
+        // 오류 발생 시 대체 방법 제공
+        console.error('네이버 예약 페이지 열기 실패:', error);
+        if (confirm('온라인 예약 페이지 열기에 실패했습니다.\n전화 예약으로 변경하시겠습니까?\n📞 043-262-2113')) {
+            window.location.href = 'tel:043-262-2113';
+        }
+    }
+}
+
+// 예약 시스템 상태 확인 함수 (디버깅용)
+function checkReservationSystem() {
+    console.log('=== 아키아키 예약 시스템 상태 체크 ===');
+    console.log('✅ openReservation 함수:', typeof openReservation === 'function' ? '정상' : '오류');
+    console.log('✅ openNaverReservation 함수:', typeof openNaverReservation === 'function' ? '정상' : '오류');
+    console.log('✅ 전화번호: 043-262-2113');
+    console.log('✅ 영업시간: 매일 11:30 ~ 21:30');
+    console.log('✅ 네이버 예약: https://m.place.naver.com/restaurant/12027905/home?entry=pll');
+    
+    // 예약 버튼 개수 확인
+    const reservationButtons = document.querySelectorAll('[onclick*="openReservation"], [onclick*="openNaverReservation"]');
+    console.log(`✅ 총 예약 버튼 개수: ${reservationButtons.length}개`);
+    
+    console.log('=== 예약 시스템 체크 완료 ===');
 }
 
 // ================== 히어로 캐러셀 기능들 ==================
@@ -313,6 +341,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // 터치 이벤트도 추가 (모바일 지원)
         openingAnimation.addEventListener('touchstart', skipOpeningAnimation);
     }
+    
+    // 예약 시스템 상태 확인 (개발용 - 필요시 주석 해제)
+    // checkReservationSystem();
     
     // 히어로 섹션에 마우스가 올라갔을 때 자동 슬라이드 멈추기
     const heroSection = document.querySelector('.hero-section');

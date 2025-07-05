@@ -28,7 +28,7 @@
             
             <!-- 환영 메시지 -->
             <div class="welcome-message">
-                <p>아키아키에 오신 걸 환영합니다</p>
+                <p>청주 대표 일식오마카세 아키아키</p>
                 <p class="welcome-subtitle">Preparing your dining experience...</p>
                 <p class="skip-hint">화면을 클릭하면 건너뛸 수 있습니다</p>
             </div>
@@ -1006,7 +1006,7 @@
                             <button class="anniversary-reservation-btn" onclick="openNaverReservation()">
                                 기념일 예약 상담
                             </button>
-                            <button class="anniversary-inquiry-btn" onclick="alert('전화 상담: 043-123-4567')">
+                            <button class="anniversary-inquiry-btn" onclick="if(confirm('기념일 상담을 위해 전화를 걸까요?\\n📞 043-262-2113')) window.location.href='tel:043-262-2113'">
                                 전화 상담
                             </button>
                         </div>
@@ -1345,7 +1345,7 @@
                     </div>
                 </div>
                 <div class="qa-notice-buttons">
-                    <button class="qa-call-btn" onclick="alert('043-262-2113으로 연결됩니다.')">
+                    <button class="qa-call-btn" onclick="if(confirm('전화 상담을 위해 연결하시겠습니까?\\n📞 043-262-2113')) window.location.href='tel:043-262-2113'">
                         📞 전화 상담 (043-262-2113)
                     </button>
                     <button class="qa-reservation-btn" onclick="openNaverReservation()">
